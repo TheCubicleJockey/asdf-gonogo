@@ -15,19 +15,19 @@ asdf plugin-add gonogo https://github.com/TheCubicleJockey/asdf-gonogo.git
 Check out the [asdf documentation](https://asdf-vm.com/#/core-manage-versions?id=install-version) for instructions on how to install and manage versions of gonogo.
 
 ## Architecture Override
-The `ASDF_gonogo_OVERWRITE_ARCH` variable can be used to override the architecture that is used for determining which `gonogo` build to download. The primary use case is when attempting to install an older version of `gonogo` for use on an Apple M1 computer as `gonogo` was not built for ARM at the time.
+The `ASDF_GONOGO_OVERWRITE_ARCH` variable can be used to override the architecture that is used for determining which `gonogo` build to download. The primary use case is when attempting to install an older version of `gonogo` for use on an Apple M1 computer as `gonogo` was not built for ARM at the time.
 
-### Without `ASDF_gonogo_OVERWRITE_ARCH`:
-
-```
-% asdf install gonogo 1.24.3
-Downloading gonogo from https://storage.googleapis.com/kubernetes-release/release/v1.18.17/bin/darwin/arm64/gonogo
-```
-
-### With `ASDF_gonogo_OVERWRITE_ARCH`:
+### Without `ASDF_GONOGO_OVERWRITE_ARCH`:
 
 ```
-% ASDF_gonogo_OVERWRITE_ARCH=amd64 asdf install gonogo 1.18.17
-Downloading gonogo from https://storage.googleapis.com/kubernetes-release/release/v1.18.17/bin/darwin/amd64/gonogo
+% asdf install gonogo 0.2.1
+Downloading gonogo from https://github.com/FairwindsOps/gonogo/releases/download/v0.2.1/gonogo_0.2.1_darwin_amd64.tar.gz
+```
+
+### With `ASDF_GONOGO_OVERWRITE_ARCH`:
+
+```
+% ASDF_GONOGO_OVERWRITE_ARCH=amd64 asdf install gonogo 0.2.0
+Downloading gonogo from https://github.com/FairwindsOps/gonogo/releases/download/v0.2.0/gonogo_0.2.0_darwin_amd64.tar.gz
 ```
 
