@@ -64,7 +64,7 @@ get_cpu() {
 get_download_url() {
   local version="$1"
   local platform="$(get_arch)"
-  echo "https://github.com/FairwindsOps/gonogo/releases/download/v${version}/gonogo_${verison}_${platform}$(get_cpu).tar.gz"
+  echo "https://github.com/FairwindsOps/gonogo/releases/download/${version}/gonogo_${version:1}_${platform}$(get_cpu).tar.gz"
 }
 
 install_gonogo $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH

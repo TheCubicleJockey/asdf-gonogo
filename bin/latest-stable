@@ -4,7 +4,7 @@ set -euo pipefail
 
 query="${1:-}"
 if [ -z "$query" ]; then
-  echo "https://github.com/FairwindsOps/polaris/releases/download/${version}/polaris_${platform}$(get_cpu).tar.gz"
+  curl --silent "https://api.github.com/repos/FairwindsOps/gonogo/releases/latest" | jq ".. .tag_name? // empty"
 else
   asdf list all gonogo "$query" | grep -ivE "(^Available version:|-src|-dev|-latest|-stm|[-\\.]rc|-alpha|-beta|[-\\.]pre|-next|(a|b|c)[0-9]+|snapshot|master)" | sed 's/^[[:space:]]\+//' | tail -1
 fi
