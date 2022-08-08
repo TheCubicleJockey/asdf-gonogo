@@ -3,20 +3,14 @@
 set -e
 set -o pipefail
 
-ASDF_INSTALL_TYPE=${ASDF_INSTALL_TYPE:-version  }
-[ -n "$ASDF_INSTALL_VERSION" ] || (>&2 echo 'Missing ASDF_INSTALL_VERSION' && exit 1)
-[ -n "$ASDF_INSTALL_PATH" ] || (>&2 echo 'Missing ASDF_INSTALL_PATH' && exit 1)
-
 install_gonogo() {
   local install_type=$1
   local version=$2
   local install_path=$3
+  local platform="$(uname | tr '[:upper:]' '[:lower:]')_amd64"
   local bin_install_path="$install_path/bin"
-
-  local download_url="$(get_download_url $version)"
-  local platform="$(get_arch)"
-
-  mkdir -p "${bin_install_path}"
+  local binary_path="$bin_install_path/gonogo"
+  local download_url=$(get_download_url $version $platform)
 
   if [ "$TMPDIR" = "" ]; then
     local tmp_download_dir=$(mktemp -d -t gonogo_XXXXXX)
@@ -24,7 +18,7 @@ install_gonogo() {
     local tmp_download_dir=$TMPDIR
   fi
 
-  local download_path="$tmp_download_dir/gonogo.tar.gz"
+  local download_path="$tmp_download_dir/$(get_filename $version $platform)"
 
   echo "Downloading gonogo from ${download_url} to ${download_path}"
   curl -Lo $download_path $download_url
@@ -38,33 +32,19 @@ install_gonogo() {
   echo "Copying binary"
   tar -zxf ${download_path} --directory $tmp_download_dir
   cp ${tmp_download_dir}/gonogo ${bin_install_path}
-  chmod +x ${bin_install_path}/gonogo
-  echo "gonogo ${version}" >> ~/.tool-versions
+  chmod +x ${binary_path}
 }
 
-get_arch() {
-  uname | tr '[:upper:]' '[:lower:]'
-}
 
-get_cpu() {
-  local machine_hardware_name
-  machine_hardware_name=${ASDF_GONOGO_OVERWRITE_ARCH:-"$(uname -m)"}
-
-  case "$machine_hardware_name" in
-    'x86_64') local cpu_type="amd64";;
-    'powerpc64le' | 'ppc64le') local cpu_type="ppc64le";;    
-    'aarch64') local cpu_type="arm64";;
-    'armv7l') local cpu_type="arm";;
-    *) local cpu_type="$machine_hardware_name";;
-  esac
-
-  echo "$cpu_type"
+get_filename() {
+  echo "gonogo_${1}_${2}.tar.gz"
 }
 
 get_download_url() {
   local version="$1"
-  local platform="$(get_arch)"
-  echo "https://github.com/FairwindsOps/gonogo/releases/download/${version}/gonogo_${version:1}_${platform}$(get_cpu).tar.gz"
+  local platform="$2"
+  local filename="$(get_filename $version $platform)"
+  echo "https://github.com/TheCubicleJockey/gonogo/releases/download/v${version}/${filename}"
 }
 
 install_gonogo $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
