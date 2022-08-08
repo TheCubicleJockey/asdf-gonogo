@@ -33,6 +33,7 @@ install_gonogo() {
   tar -zxf ${download_path} --directory $tmp_download_dir
   cp ${tmp_download_dir}/gonogo ${bin_install_path}
   chmod +x ${binary_path}
+  echo "gonogo ${version}" >> ~/.tool-versions
 }
 
 
