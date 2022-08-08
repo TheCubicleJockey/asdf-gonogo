@@ -44,7 +44,7 @@ get_download_url() {
   local version="$1"
   local platform="$2"
   local filename="$(get_filename $version $platform)"
-  echo "https://github.com/TheCubicleJockey/gonogo/releases/download/v${version}/${filename}"
+  echo "https://github.com/FairwindsOps/gonogo/releases/download/v${version}/${filename}"
 }
 
 install_gonogo $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
